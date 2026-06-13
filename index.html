@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Abortion – Types, Management & Nursing Care | MCN Review</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        .transition-all { transition: all 0.3s ease; }
+        .recall-mode .reveal-text {
+            background-color: #cbd5e1;
+            color: transparent;
+            border-radius: 0.375rem;
+            padding: 0 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            box-shadow: inset 0 0 0 1px #94a3b8;
+        }
+        .recall-mode .reveal-text:hover,
+        .recall-mode .reveal-text.revealed {
+            background-color: #fecaca;
+            color: #1e293b;
+            box-shadow: none;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #b91c1c; border-radius: 8px; }
+        .content-section { animation: fade 0.3s ease; }
+        @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .quiz-feedback-correct { background-color: #dcfce7; border-left: 4px solid #22c55e; }
+        .quiz-feedback-wrong { background-color: #fee2e2; border-left: 4px solid #ef4444; }
+        .locked-section { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { abortion: { light: '#fef2f2', DEFAULT: '#b91c1c', dark: '#991b1b' } } } }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 h-screen flex flex-col md:flex-row font-sans text-slate-800 overflow-hidden">
+
+    <!-- Mobile Header -->
+    <div class="md:hidden bg-abortion-dark text-white p-4 flex justify-between items-center shadow-md z-30 shrink-0">
+        <button onclick="toggleMobileMenu()" class="text-white focus:outline-none z-40">
+            <i class="fa-solid fa-bars text-2xl"></i>
+        </button>
+        <h1 class="font-bold text-lg absolute left-1/2 transform -translate-x-1/2 pointer-events-none">
+            <i class="fa-solid fa-heart-broken mr-2"></i> Abortion
+        </h1>
+        <div class="w-8"></div>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="hidden md:flex flex-col w-full md:w-80 bg-white shadow-2xl h-full absolute md:relative z-30 transition-transform duration-300 shrink-0 border-r border-slate-200">
+        <div class="p-6 bg-gradient-to-br from-abortion-dark to-abortion text-white hidden md:block shrink-0">
+            <h1 class="font-black text-2xl tracking-wide"><i class="fa-solid fa-stethoscope mr-2"></i> Abortion (All Types)</h1>
+            <p class="text-sm text-red-200 mt-1 font-medium">Spontaneous & Induced | Pillitteri</p>
+        </div>
+        <div class="flex-1 overflow-y-auto py-4">
+            <ul class="space-y-1 text-sm font-medium">
+                <li><button onclick="showSection('home')" id="btn-home" class="nav-btn w-full text-left px-6 py-3 bg-abortion-light text-abortion-dark border-r-4 border-abortion-dark transition-colors"><i class="fa-solid fa-house w-6 nav-icon"></i><i class="fa-solid fa-lock w-6 hidden"></i> Home / Start</button></li>
+                <li><button onclick="showSection('overview')" id="btn-overview" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-book-open w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Overview & Definitions</button></li>
+                <li><button onclick="showSection('types')" id="btn-types" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-list w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Types of Spontaneous Abortion</button></li>
+                <li><button onclick="showSection('habitual')" id="btn-habitual" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-repeat w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Habitual/Recurrent Abortion</button></li>
+                <li><button onclick="showSection('induced')" id="btn-induced" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-syringe w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Induced Abortion (Elective & Therapeutic)</button></li>
+                <li><button onclick="showSection('complications')" id="btn-complications" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-skull-crossbones w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Complications (Hemorrhage, Infection, DIC)</button></li>
+                <li><button onclick="showSection('nursing')" id="btn-nursing" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-user-nurse w-6 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Nursing Care & Grief Support</button></li>
+                <li><button onclick="showSection('mnemonics')" id="btn-mnemonics" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors border-t border-slate-200 mt-2 locked-section"><i class="fa-solid fa-brain w-6 text-abortion nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Mnemonics & Summary</button></li>
+                <li><button onclick="showSection('final_quiz_sec')" id="btn-final_quiz_sec" class="nav-btn w-full text-left px-6 py-3 text-slate-600 hover:bg-slate-50 transition-colors locked-section"><i class="fa-solid fa-graduation-cap w-6 text-amber-500 nav-icon hidden"></i><i class="fa-solid fa-lock w-6 text-slate-400"></i> Final 50‑Item Exam</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="flex-1 h-full overflow-y-auto bg-slate-100 relative w-full">
+        <div class="fixed top-16 md:top-4 right-4 md:right-8 z-40 flex items-center bg-white/90 backdrop-blur px-4 py-3 rounded-full shadow-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors" onclick="toggleRecallMode()">
+            <span class="mr-3 text-sm font-bold text-slate-700 hidden md:inline"><i class="fa-solid fa-brain text-abortion mr-1"></i> Active Recall</span>
+            <button id="recall-toggle" class="w-12 h-6 bg-slate-300 rounded-full relative transition-colors duration-300 focus:outline-none shadow-inner pointer-events-none">
+                <div id="recall-knob" class="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 transition-transform duration-300 shadow"></div>
+            </button>
+        </div>
+
+        <div class="p-4 md:p-8 max-w-6xl mx-auto pb-32">
+            <!-- HOME SECTION -->
+            <section id="home" class="content-section flex flex-col items-center justify-center min-h-[80vh] text-center block">
+                <div class="bg-gradient-to-br from-slate-800 to-abortion-dark text-white rounded-3xl shadow-2xl p-10 md:p-16 w-full relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mt-10 -mr-10 text-white opacity-5 pointer-events-none"><i class="fa-solid fa-heart-crack text-[20rem]"></i></div>
+                    <div class="relative z-10">
+                        <div class="bg-white/10 backdrop-blur-sm inline-block p-4 rounded-full text-red-300 mb-6 shadow-sm border border-white/20">
+                            <i class="fa-solid fa-hand-holding-medical text-5xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-300 mb-2 uppercase tracking-widest">Maternal & Child Health Nursing</h3>
+                        <h1 class="text-4xl md:text-6xl font-black text-white mb-6 leading-tight drop-shadow-md">Abortion (All Types)</h1>
+                        <div class="bg-white/10 backdrop-blur inline-block px-6 py-3 rounded-full mb-10 border border-white/20">
+                            <p class="text-lg text-white font-medium">Spontaneous, Induced, Recurrent | <strong>Adele Pillitteri, 7e</strong></p>
+                        </div>
+                        <button onclick="unlockFirstSection()" class="bg-slate-600 hover:bg-slate-500 text-white font-black py-4 px-10 rounded-full shadow-xl transition-transform hover:scale-105 text-lg flex items-center mx-auto focus:outline-none">
+                            Begin Module <i class="fa-solid fa-arrow-right ml-3"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 1. OVERVIEW & DEFINITIONS -->
+            <section id="overview" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-abortion pb-3"><i class="fa-solid fa-book-open text-abortion mr-4"></i> Overview & Definitions</h2>
+                    <p><strong>Abortion</strong> – Interruption of pregnancy before viability (usually <20–24 weeks or <500 g). <strong>Spontaneous abortion</strong> (miscarriage) occurs naturally; <strong>induced abortion</strong> is intentional.</p>
+                    <div class="grid md:grid-cols-2 gap-5 mt-4">
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong>📊 Incidence</strong><br><span class="reveal-text">15–30% of recognized pregnancies end in spontaneous abortion. 80% occur in first trimester.</span></div>
+                        <div class="bg-slate-50 p-4 rounded-xl"><strong>🧬 Common Causes</strong><br><span class="reveal-text">Chromosomal abnormalities (50–80% of early miscarriages), teratogens, infections, hormonal/uterine anomalies, autoimmune factors.</span></div>
+                    </div>
+                    <div class="bg-abortion-light p-3 rounded-lg mt-4"><i class="fa-regular fa-lightbulb"></i> <strong>Key concept:</strong> Bleeding in early pregnancy is always abnormal; evaluate for ectopic pregnancy and types of abortion.</div>
+                    <button onclick="openQuiz('overview')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 2. TYPES OF SPONTANEOUS ABORTION -->
+            <section id="types" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-abortion pb-3"><i class="fa-solid fa-list text-abortion mr-4"></i> Types of Spontaneous Abortion</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm border-collapse border">
+                            <thead class="bg-abortion text-white"><tr><th class="p-2 border">Type</th><th class="p-2 border">Definition</th><th class="p-2 border">Key Features / Nursing Action</th></tr></thead>
+                            <tbody>
+                                <tr><td class="border p-2 font-bold">Threatened</td><td class="border reveal-text">Vaginal spotting, cervix closed, pregnancy continues</td><td class="border reveal-text">Bed rest, reassurance, avoid coitus; 50% progress to complete abortion</td></tr>
+                                <tr class="bg-slate-50"><td class="border p-2 font-bold">Inevitable</td><td class="border reveal-text">Bleeding + cramping, cervix dilated, membranes intact or ruptured</td><td class="border reveal-text">Prepare for D&C or medical evacuation; monitor for hemorrhage</td></tr>
+                                <tr><td class="border p-2 font-bold">Incomplete</td><td class="border reveal-text">Some products of conception retained (open os)</td><td class="border reveal-text">Risk of hemorrhage, infection; D&C or suction curettage needed</td></tr>
+                                <tr class="bg-slate-50"><td class="border p-2 font-bold">Complete</td><td class="border reveal-text">All products expelled, os closed, bleeding subsides</td><td class="border reveal-text">Supportive care; RhIG if Rh‑negative; no surgery usually</td></tr>
+                                <tr><td class="border p-2 font-bold">Missed</td><td class="border reveal-text">Fetus died but retained for weeks; os closed; no symptoms</td><td class="border reveal-text">Ultrasound diagnosis; D&C or medical induction; monitor for DIC</td></tr>
+                                <tr class="bg-slate-50"><td class="border p-2 font-bold">Septic</td><td class="border reveal-text">Infection of products of conception, often with incomplete abortion</td><td class="border reveal-text">Fever, foul discharge, uterine tenderness; IV antibiotics, D&C; risk of septic shock</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-amber-50 p-3 rounded-lg mt-4"><strong>⚠️ Note:</strong> <span class="reveal-text">Habitual abortion = ≥3 consecutive spontaneous losses.</span></div>
+                    <button onclick="openQuiz('types')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 3. HABITUAL/RECURRENT ABORTION -->
+            <section id="habitual" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-abortion pb-3"><i class="fa-solid fa-repeat text-abortion mr-4"></i> Habitual / Recurrent Abortion</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Definition:</strong> <span class="reveal-text">Three or more consecutive spontaneous abortions before 20 weeks.</span></li>
+                        <li><strong>Causes:</strong> <span class="reveal-text">Uterine anomalies (septate, bicornuate), cervical incompetence, chromosomal abnormalities (parental balanced translocation), endocrine disorders (luteal phase defect, thyroid, diabetes), antiphospholipid syndrome, infections, environmental toxins.</span></li>
+                        <li><strong>Diagnostic workup:</strong> <span class="reveal-text">Parental karyotyping, hysterosalpingography, antiphospholipid antibodies, thyroid function, glucose tolerance, endometrial biopsy.</span></li>
+                        <li><strong>Management:</strong> <span class="reveal-text">Treat underlying cause: cervical cerclage for incompetence, heparin/aspirin for antiphospholipid syndrome, progesterone supplementation for luteal defect, surgical correction of uterine anomalies.</span></li>
+                        <li><strong>Nursing support:</strong> <span class="reveal-text">Emotional support, grief counseling, coordination of diagnostic tests, education about future pregnancy monitoring.</span></li>
+                    </ul>
+                    <div class="bg-red-50 p-3 rounded-lg mt-4"><i class="fa-regular fa-bell"></i> <strong>Recurrence risk:</strong> <span class="reveal-text">After three losses, risk of another miscarriage is ~30% without treatment.</span></div>
+                    <button onclick="openQuiz('habitual')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 4. INDUCED ABORTION (ELECTIVE & THERAPEUTIC) -->
+            <section id="induced" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-abortion pb-3"><i class="fa-solid fa-syringe text-abortion mr-4"></i> Induced Abortion (Elective & Therapeutic)</h2>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div><strong>💊 Medical methods (early ≤10 weeks)</strong><br><span class="reveal-text">Mifepristone (RU‑486) + misoprostol; methotrexate + misoprostol. Nursing: monitor bleeding, pain, ensure follow‑up for completion.</span></div>
+                        <div><strong>✂️ Surgical methods</strong><br><span class="reveal-text">Manual vacuum aspiration (≤12 weeks), dilation and curettage (D&C), dilation and evacuation (D&E; >14 weeks).</span></div>
+                        <div><strong>⚖️ Therapeutic abortion</strong><br><span class="reveal-text">Performed to preserve maternal health (e.g., severe cardiac disease, eclampsia, cancer requiring treatment) or due to fetal anomaly (lethal).</span></div>
+                        <div><strong>⚠️ Illegal/unsafe abortion</strong><br><span class="reveal-text">High risk of incomplete abortion, sepsis, hemorrhage, uterine perforation, death. Nursing: treat complications, provide nonjudgmental care, offer contraception and counseling.</span></div>
+                    </div>
+                    <div class="bg-abortion-light p-3 rounded-lg mt-4"><i class="fa-regular fa-hospital"></i> <strong>Post‑abortion care:</strong> <span class="reveal-text">Monitor vitals, bleeding, pain; RhIG for Rh‑negative; contraceptive counseling; emotional support.</span></div>
+                    <button onclick="openQuiz('induced')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 5. COMPLICATIONS (HEMORRHAGE, INFECTION, DIC) -->
+            <section id="complications" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-abortion pb-3"><i class="fa-solid fa-skull-crossbones text-abortion mr-4"></i> Complications of Abortion</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Hemorrhage:</strong> <span class="reveal-text">Excessive blood loss (incomplete or septic abortion). Management: IV fluids, oxytocin, D&C, blood transfusion.</span></li>
+                        <li><strong>Infection (Endometritis, peritonitis):</strong> <span class="reveal-text">Fever, foul lochia, uterine tenderness. Broad‑spectrum antibiotics, D&C for retained tissue.</span></li>
+                        <li><strong>DIC (Disseminated Intravascular Coagulation):</strong> <span class="reveal-text">Particularly with missed abortion (dead fetus retained >4 weeks). Uncontrolled bleeding, coagulopathy; treat with blood products, evacuation.</span></li>
+                        <li><strong>Uterine perforation:</strong> <span class="reveal-text">From instrumentation (D&C). Signs: sudden cessation of resistance, abdominal pain, hemorrhage. May require laparotomy.</span></li>
+                        <li><strong>Isoimmunization:</strong> <span class="reveal-text">Rh‑negative mother exposed to Rh‑positive fetal blood → give RhIG within 72 hours.</span></li>
+                        <li><strong>Psychological sequelae:</strong> <span class="reveal-text">Grief, depression, guilt, anxiety. Offer counseling and support groups.</span></li>
+                    </ul>
+                    <div class="bg-red-100 p-3 rounded-lg mt-4"><strong>🚨 Septic abortion emergency:</strong> <span class="reveal-text">Fever, tachycardia, hypotension, oliguria → IV antibiotics, D&C, ICU care.</span></div>
+                    <button onclick="openQuiz('complications')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 6. NURSING CARE & GRIEF SUPPORT -->
+            <section id="nursing" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-abortion pb-3"><i class="fa-solid fa-user-nurse text-abortion mr-4"></i> Nursing Care & Grief Support</h2>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Physical care:</strong> <span class="reveal-text">Monitor bleeding, vital signs, pain. Administer medications as ordered. Provide perineal care.</span></li>
+                        <li><strong>Rh immune globulin:</strong> <span class="reveal-text">Give within 72 hours after miscarriage, abortion, or ectopic to Rh‑negative unsensitized women.</span></li>
+                        <li><strong>Emotional support:</strong> <span class="reveal-text">Acknowledge loss, allow expression of grief, use the term “baby” or “pregnancy” not “products of conception”. Normalize feelings of guilt and sadness.</span></li>
+                        <li><strong>Partner/family:</strong> <span class="reveal-text">Include partner in support; men may also grieve. Provide resources for counseling.</span></li>
+                        <li><strong>Discharge teaching:</strong> <span class="reveal-text">Warning signs (fever, heavy bleeding, foul discharge). Activity restrictions for 1–2 weeks. Avoid intercourse/tampons for 2 weeks. Contraception counseling (ovulation can return in 2 weeks).</span></li>
+                        <li><strong>Future pregnancy:</strong> <span class="reveal-text">Recommend folic acid, wait 1–3 cycles before trying again unless investigating recurrent loss. Reassure that one miscarriage does not increase risk of another.</span></li>
+                    </ul>
+                    <div class="bg-green-50 p-3 rounded-lg mt-4"><i class="fa-regular fa-heart"></i> <strong>Key nursing attitude:</strong> Nonjudgmental, compassionate, and culturally sensitive care regardless of abortion type.</div>
+                    <button onclick="openQuiz('nursing')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Next</button>
+                </div>
+            </section>
+
+            <!-- 7. MNEMONICS & SUMMARY -->
+            <section id="mnemonics" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-black text-slate-800 mb-4 border-b-2 border-abortion pb-3"><i class="fa-solid fa-brain text-abortion mr-4"></i> Mnemonics & Summary Table</h2>
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div class="bg-red-50 p-4 rounded-xl"><strong>📌 “T.I.C.M.S.” – Types of Spontaneous Abortion</strong><br><span class="reveal-text">Threatened, Inevitable, Complete, Missed, Septic. (Incomplete also important).</span></div>
+                        <div class="bg-red-50 p-4 rounded-xl"><strong>⚠️ Causes of Recurrent Loss (U.C.A.N.)</strong><br><span class="reveal-text">Uterine anomalies, Chromosomal, Antiphospholipid syndrome, Not identified (idiopathic).</span></div>
+                        <div class="bg-red-50 p-4 rounded-xl"><strong>🧬 Most Common Cause (1st trimester)</strong><br><span class="reveal-text">Chromosomal abnormalities (50–80%).</span></div>
+                        <div class="bg-red-50 p-4 rounded-xl"><strong>💊 Medical Abortion Drugs</strong><br><span class="reveal-text">Mifepristone + misoprostol (early). Methotrexate + misoprostol.</span></div>
+                        <div class="bg-red-50 p-4 rounded-xl"><strong>🩸 RhIG Indications</strong><br><span class="reveal-text">Spontaneous or induced abortion, ectopic, molar pregnancy, after 28 weeks also postpartum if infant Rh+.</span></div>
+                        <div class="bg-red-50 p-4 rounded-xl"><strong>📋 Nursing Priorities (P.A.C.E.)</strong><br><span class="reveal-text">Physical support (bleeding, vitals), Assessment (Rh status, emotional), Comfort (pain, grief), Education (discharge, contraception).</span></div>
+                    </div>
+                    <button onclick="openQuiz('mnemonics')" class="mt-6 w-full bg-slate-800 text-white font-black py-3 rounded-xl">Take Quiz → Unlock Final Exam</button>
+                </div>
+            </section>
+
+            <!-- FINAL EXAM SECTION -->
+            <section id="final_quiz_sec" class="content-section hidden">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 text-center min-h-[60vh] flex flex-col justify-center items-center">
+                    <i class="fa-solid fa-graduation-cap text-8xl text-amber-500 mb-6"></i>
+                    <h2 class="text-4xl font-black text-slate-800 mb-4">Final 50‑Item Exam: Abortion</h2>
+                    <p class="text-lg text-slate-600 mb-8 max-w-2xl">Covers definitions, types, recurrent loss, induced abortion, complications, nursing care, and mnemonics. Score ≥75% to pass.</p>
+                    <button onclick="openQuiz('final_quiz')" class="w-full max-w-md bg-slate-800 text-white font-black py-4 rounded-xl shadow-md text-xl">Start Final Exam</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- QUIZ MODAL -->
+    <div id="quiz-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
+        <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeQuiz()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-2xl"></i></button>
+            <h2 id="quiz-title" class="text-3xl font-black text-slate-800 mb-2"></h2>
+            <div id="quiz-questions-container" class="space-y-4 mt-4"></div>
+            <button id="quiz-submit-btn" onclick="submitQuiz()" class="mt-8 w-full bg-abortion text-white font-bold py-4 rounded-xl shadow-lg">Submit Answers</button>
+            <div id="quiz-result-container" class="hidden mt-6 p-4 rounded-xl bg-slate-100"></div>
+        </div>
+    </div>
+
+    <script>
+        let unlockedSections = ['home'];
+        // QUIZZES (10 questions each)
+        const quizzes = {
+            overview: { title: "Overview & Definitions", next: "types", questions: [
+                { q: "Abortion is defined as interruption of pregnancy before viability, usually before:", options: ["20 weeks or <500g", "24 weeks", "28 weeks", "12 weeks"], ans: 0 },
+                { q: "Approximately what percentage of recognized pregnancies end in spontaneous abortion?", options: ["5%", "15–30%", "40%", "50%"], ans: 1 },
+                { q: "Most first-trimester miscarriages are caused by:", options: ["Maternal infection", "Chromosomal abnormalities", "Uterine anomalies", "Hormonal imbalance"], ans: 1 },
+                { q: "Bleeding in early pregnancy is:", options: ["Always normal", "Always abnormal and requires evaluation", "Usually due to implantation", "Only concerning if heavy"], ans: 1 },
+                { q: "Which trimester has the highest rate of spontaneous abortion?", options: ["First", "Second", "Third", "Equal across trimesters"], ans: 0 },
+                { q: "A patient with spotting, closed cervix, and positive fetal heart tones is likely experiencing:", options: ["Inevitable abortion", "Threatened abortion", "Missed abortion", "Complete abortion"], ans: 1 },
+                { q: "The term 'miscarriage' is synonymous with:", options: ["Induced abortion", "Spontaneous abortion", "Therapeutic abortion", "Septic abortion"], ans: 1 },
+                { q: "After how many consecutive losses is a diagnosis of habitual abortion made?", options: ["2", "3", "4", "5"], ans: 1 },
+                { q: "Which of the following is a risk factor for spontaneous abortion?", options: ["Advanced maternal age", "Multiparity", "High socioeconomic status", "Male fetus"], ans: 0 },
+                { q: "Anembryonic pregnancy (blighted ovum) is a type of:", options: ["Missed abortion", "Complete abortion", "Septic abortion", "Inevitable abortion"], ans: 0 }
+            ]},
+            types: { title: "Types of Spontaneous Abortion", next: "habitual", questions: [
+                { q: "Which type of abortion is characterized by a dilated cervix, bleeding, and cramping with no products expelled yet?", options: ["Threatened", "Inevitable", "Incomplete", "Complete"], ans: 1 },
+                { q: "A patient has passage of tissue, closed cervix, and bleeding subsiding. This describes:", options: ["Incomplete abortion", "Complete abortion", "Missed abortion", "Septic abortion"], ans: 1 },
+                { q: "Retained products of conception with an open cervical os and bleeding is:", options: ["Complete abortion", "Incomplete abortion", "Missed abortion", "Threatened"], ans: 1 },
+                { q: "Fetal death without expulsion for several weeks is known as:", options: ["Threatened", "Inevitable", "Missed", "Septic"], ans: 2 },
+                { q: "Septic abortion is diagnosed when there is:", options: ["Heavy bleeding only", "Infection of products of conception", "Cervical incompetence", "Chromosomal anomalies"], ans: 1 },
+                { q: "A patient with fever, foul vaginal discharge, and uterine tenderness after incomplete abortion likely has:", options: ["Missed abortion", "Septic abortion", "Threatened abortion", "Complete abortion"], ans: 1 },
+                { q: "The management of incomplete abortion typically involves:", options: ["Bed rest and observation", "Dilation and curettage (D&C)", "RhIG only", "Antibiotics alone"], ans: 1 },
+                { q: "In threatened abortion, the nurse should advise:", options: ["Immediate D&C", "Bed rest, avoid coitus, report increased bleeding", "Induction of labor", "Nothing, it's normal"], ans: 1 },
+                { q: "Which type of abortion has the highest risk of disseminated intravascular coagulation (DIC)?", options: ["Threatened", "Complete", "Missed (retained dead fetus)", "Inevitable"], ans: 2 },
+                { q: "Ultrasound shows a gestational sac with no fetal pole and no cardiac activity at 10 weeks. This is consistent with:", options: ["Missed abortion", "Complete abortion", "Inevitable abortion", "Ectopic pregnancy"], ans: 0 }
+            ]},
+            habitual: { title: "Habitual/Recurrent Abortion", next: "induced", questions: [
+                { q: "Habitual abortion is defined as:", options: ["≥2 consecutive losses", "≥3 consecutive losses", "≥4 consecutive losses", "Any loss after 20 weeks"], ans: 1 },
+                { q: "Which uterine anomaly is commonly associated with recurrent miscarriage?", options: ["Unicornuate uterus", "Septate uterus", "Arcuate uterus", "All of the above"], ans: 3 },
+                { q: "Cervical incompetence leading to recurrent mid‑trimester loss is treated with:", options: ["Progesterone", "Cervical cerclage", "Bed rest only", "Antibiotics"], ans: 1 },
+                { q: "Antiphospholipid syndrome (APS) in recurrent abortion is treated with:", options: ["Aspirin alone", "Heparin + low‑dose aspirin", "Corticosteroids", "IVIG"], ans: 1 },
+                { q: "Parental balanced translocation increases risk of:", options: ["Preterm labor", "Recurrent aneuploidy and miscarriage", "Gestational diabetes", "Preeclampsia"], ans: 1 },
+                { q: "What diagnostic test is used to evaluate uterine cavity for septa or fibroids?", options: ["HSG (hysterosalpingography)", "CBC", "Karyotype", "FSH level"], ans: 0 },
+                { q: "Luteal phase defect, a cause of recurrent loss, is treated with:", options: ["Clomiphene", "Progesterone supplementation", "Metformin", "Thyroid hormone"], ans: 1 },
+                { q: "The recurrence risk for another miscarriage after three consecutive losses without treatment is approximately:", options: ["5%", "15%", "30%", "50%"], ans: 2 },
+                { q: "Which of the following is NOT a common cause of recurrent miscarriage?", options: ["Antiphospholipid syndrome", "Uterine septum", "Advanced paternal age only", "Hypothyroidism"], ans: 2 },
+                { q: "A couple with recurrent early losses should undergo:", options: ["Parental karyotyping", "Hysteroscopy", "Antiphospholipid antibody testing", "All of the above"], ans: 3 }
+            ]},
+            induced: { title: "Induced Abortion", next: "complications", questions: [
+                { q: "The combination regimen for medical abortion up to 10 weeks is:", options: ["Misoprostol alone", "Mifepristone + misoprostol", "Methotrexate + misoprostol", "Both B and C"], ans: 3 },
+                { q: "Dilation and evacuation (D&E) is typically performed after:", options: ["6 weeks", "10 weeks", "14 weeks", "24 weeks"], ans: 2 },
+                { q: "Therapeutic abortion is performed to:", options: ["Preserve maternal health or due to fetal anomaly", "Terminate unwanted pregnancy only", "Any request", "None of the above"], ans: 0 },
+                { q: "Illegal/unsafe abortion is associated with high risk of:", options: ["Sepsis, hemorrhage, uterine perforation", "Mild cramping", "Complete abortion", "No complications"], ans: 0 },
+                { q: "Post‑abortion care includes:", options: ["RhIG for Rh‑negative", "Contraceptive counseling", "Emotional support", "All of the above"], ans: 3 },
+                { q: "Which surgical method is used for first‑trimester abortion (≤12 weeks)?", options: ["D&E", "Manual vacuum aspiration or D&C", "Hysterotomy", "Salpingectomy"], ans: 1 },
+                { q: "Mifepristone (RU‑486) works by:", options: ["Blocking progesterone receptors", "Stimulating contractions", "Softening the cervix", "Inducing ovulation"], ans: 0 },
+                { q: "A patient undergoing medical abortion should be instructed to:", options: ["Return for follow‑up to confirm completion", "Ignore bleeding", "Take only one dose", "Stop all medications"], ans: 0 },
+                { q: "The risk of incomplete abortion is higher with:", options: ["Surgical abortion", "Medical abortion (if not followed up)", "D&C", "Hysterectomy"], ans: 1 },
+                { q: "Contraception can be started:", options: ["Immediately after abortion", "Wait 6 weeks", "Only after next period", "Never"], ans: 0 }
+            ]},
+            complications: { title: "Complications (Hemorrhage, Infection, DIC)", next: "nursing", questions: [
+                { q: "A patient with incomplete abortion develops fever, foul lochia, and uterine tenderness. This suggests:", options: ["Endometritis", "Hemorrhage", "DIC", "Uterine perforation"], ans: 0 },
+                { q: "Excessive bleeding after abortion requires:", options: ["D&C, IV fluids, oxytocin, possible transfusion", "Discharge home", "Oral iron only", "Observation"], ans: 0 },
+                { q: "Missed abortion retained for >4 weeks increases risk of:", options: ["DIC (consumption coagulopathy)", "Septicemia", "Ectopic pregnancy", "Molar pregnancy"], ans: 0 },
+                { q: "Signs of uterine perforation during D&C include:", options: ["Loss of resistance, sudden abdominal pain, hemorrhage", "Increased bleeding only", "No symptoms", "Fever"], ans: 0 },
+                { q: "Rh immune globulin is indicated after abortion for:", options: ["All women", "Rh‑negative unsensitized women", "Rh‑positive women", "Only after term delivery"], ans: 1 },
+                { q: "Septic abortion with septic shock requires:", options: ["ICU admission, IV antibiotics, D&C", "Oral antibiotics", "Outpatient management", "Observation"], ans: 0 },
+                { q: "A patient with suspected DIC after missed abortion would have lab findings of:", options: ["Low platelets, low fibrinogen, elevated PT/PTT", "High platelets, high fibrinogen", "Normal labs", "Elevated platelets"], ans: 0 },
+                { q: "The most common complication of induced abortion is:", options: ["Hemorrhage", "Infection", "Uterine perforation", "Anesthesia reaction"], ans: 0 },
+                { q: "A patient reports heavy bleeding, cramping, and passing clots 2 days after medical abortion. The nurse should:", options: ["Reassure it is normal", "Assess for signs of hypovolemia and retained products", "Send home", "Give oral contraceptives"], ans: 1 },
+                { q: "Psychological complications after abortion may include:", options: ["Grief, depression, anxiety", "Euphoria", "No emotional response", "Increased libido"], ans: 0 }
+            ]},
+            nursing: { title: "Nursing Care & Grief Support", next: "mnemonics", questions: [
+                { q: "When caring for a patient with spontaneous abortion, the nurse should:", options: ["Avoid using the word 'baby'", "Acknowledge the loss and allow grief expression", "Tell her it's not a real loss", "Immediately discharge"], ans: 1 },
+                { q: "After a miscarriage, Rh‑negative unsensitized woman should receive RhIG within:", options: ["24 hours", "72 hours", "1 week", "2 weeks"], ans: 1 },
+                { q: "Discharge teaching after abortion includes avoiding:", options: ["Tampons, intercourse for 2 weeks", "Walking", "Showering", "Eating"], ans: 0 },
+                { q: "A patient asks when she can try to conceive again after one miscarriage. The nurse advises:", options: ["Wait 1–3 cycles unless evaluating recurrent loss", "Try immediately", "Wait 1 year", "Never try again"], ans: 0 },
+                { q: "The partner of a woman who miscarried may experience:", options: ["Grief and need support", "No reaction", "Only physical symptoms", "Blame only on mother"], ans: 0 },
+                { q: "In threatened abortion, the nurse should instruct the patient to:", options: ["Report increased bleeding or pain", "Continue vigorous exercise", "Have intercourse daily", "Ignore symptoms"], ans: 0 },
+                { q: "Emotional support for a woman undergoing induced abortion should be:", options: ["Nonjudgmental and supportive", "Judgmental", "Avoid the topic", "Only physical care"], ans: 0 },
+                { q: "Contraception counseling after abortion is important because:", options: ["Ovulation can return as early as 2 weeks", "Pregnancy is impossible", "Abortion prevents future pregnancy", "Hormones are suppressed for months"], ans: 0 },
+                { q: "The nurse should monitor for signs of infection after abortion, including:", options: ["Fever, foul discharge, uterine tenderness", "Mild cramping", "Light spotting", "Breast tenderness"], ans: 0 },
+                { q: "A patient who has completed a miscarriage (complete abortion) with stable vitals and no bleeding may be:", options: ["Discharged with follow‑up", "Admitted for D&C", "Given RhIG and discharged", "Both A and C"], ans: 3 }
+            ]},
+            mnemonics: { title: "Mnemonics & Summary", next: "final_quiz_sec", questions: [
+                { q: "The mnemonic 'T.I.C.M.S.' for types of spontaneous abortion includes all EXCEPT:", options: ["Threatened", "Inevitable", "Complete", "Septic", "Incomplete? Actually TICMS includes threatened, inevitable, complete, missed, septic – incomplete is separate"], ans: 4 },
+                { q: "'U.C.A.N.' for causes of recurrent abortion stands for:", options: ["Uterine anomalies, Chromosomal, Antiphospholipid, Not identified", "Unicornuate, Cervical, Autoimmune, Nutrition", "Uterine, Chromosomal, Anatomic, Neurologic"], ans: 0 },
+                { q: "The most common cause of first‑trimester miscarriage is:", options: ["Infection", "Chromosomal abnormalities", "Uterine anomalies", "Cervical incompetence"], ans: 1 },
+                { q: "The medication combination for medical abortion includes:", options: ["Mifepristone + misoprostol", "Oxytocin + misoprostol", "Methotrexate alone", "Estrogen + progesterone"], ans: 0 },
+                { q: "RhIG is indicated for Rh‑negative women after:", options: ["Spontaneous abortion, induced abortion, ectopic", "Only term delivery", "Only first miscarriage", "Never"], ans: 0 },
+                { q: "The mnemonic 'P.A.C.E.' for nursing priorities in abortion stands for:", options: ["Physical support, Assessment, Comfort, Education", "Pain, Antibiotics, Cervical check, Examination", "Progesterone, Aspirin, Counseling, Empathy"], ans: 0 },
+                { q: "A patient with three consecutive miscarriages should be worked up for:", options: ["Habitual abortion", "Ectopic pregnancy", "Molar pregnancy", "Preterm labor"], ans: 0 },
+                { q: "Which type of abortion carries the highest risk of DIC?", options: ["Missed abortion with retained dead fetus", "Threatened abortion", "Complete abortion", "Septic abortion"], ans: 0 },
+                { q: "The cervical cerclage procedure is used for:", options: ["Cervical incompetence", "Uterine septum", "Bicornuate uterus", "Leiomyoma"], ans: 0 },
+                { q: "In the mnemonic 'T.I.C.M.S.' the 'S' stands for:", options: ["Septic", "Spontaneous", "Surgical", "Symptomatic"], ans: 0 }
+            ]}
+        };
+        // Build final 50-item exam
+        let finalQ = [];
+        for(let sec of ['overview','types','habitual','induced','complications','nursing','mnemonics']) {
+            finalQ.push(...quizzes[sec].questions.slice(0,7));
+        }
+        while(finalQ.length < 50) finalQ.push({ q: "The definitive treatment for septic abortion includes:", options: ["Oral antibiotics", "Dilation and curettage (D&C) plus IV antibiotics", "Bed rest only", "Expectant management"], ans: 1 });
+        quizzes.final_quiz = { title: "Final 50‑Item Exam: Abortion (All Types)", next: null, questions: finalQ };
+
+        let currentQuiz = null;
+
+        function unlockFirstSection() { if(!unlockedSections.includes('overview')) { unlockedSections.push('overview'); updateSidebarUI(); } showSection('overview'); }
+        function showSection(sectionId) {
+            if (!unlockedSections.includes(sectionId) && sectionId !== 'home') { alert("Complete the Active Recall Quiz at the bottom of the previous section to unlock."); return; }
+            document.querySelectorAll('.content-section').forEach(el => el.classList.add('hidden'));
+            document.getElementById(sectionId)?.classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-abortion-light','text-abortion-dark','border-r-4','border-abortion-dark'));
+            const activeBtn = document.getElementById('btn-'+sectionId);
+            if(activeBtn) activeBtn.classList.add('bg-abortion-light','text-abortion-dark','border-r-4','border-abortion-dark');
+            if(window.innerWidth < 768) document.getElementById('sidebar').classList.add('hidden');
+        }
+        function updateSidebarUI() {
+            const sections = ['home','overview','types','habitual','induced','complications','nursing','mnemonics','final_quiz_sec'];
+            sections.forEach(sec => {
+                const btn = document.getElementById('btn-'+sec);
+                if(!btn) return;
+                const lock = btn.querySelector('.fa-lock'), icon = btn.querySelector('.nav-icon');
+                if(unlockedSections.includes(sec) || sec==='home') { btn.classList.remove('locked-section'); if(lock) lock.classList.add('hidden'); if(icon) icon.classList.remove('hidden'); }
+                else { btn.classList.add('locked-section'); if(lock) lock.classList.remove('hidden'); if(icon) icon.classList.add('hidden'); }
+            });
+        }
+        function openQuiz(sectionId) { currentQuiz = sectionId; const qd = quizzes[sectionId]; if(!qd) return; document.getElementById('quiz-title').innerHTML = qd.title; const container = document.getElementById('quiz-questions-container'); container.innerHTML = ''; qd.questions.forEach((q, idx) => { let html = `<div class="bg-slate-50 p-4 rounded-xl mb-4"><p class="font-bold mb-3">${idx+1}. ${q.q}</p><div class="space-y-2">`; q.options.forEach((opt,oi) => { html += `<label class="flex items-center space-x-3 p-2 rounded-lg hover:bg-white cursor-pointer"><input type="radio" name="q${idx}" value="${oi}" class="form-radio text-abortion"><span>${opt}</span></label>`; }); html += `</div><div class="feedback-${idx} text-sm mt-2 hidden"></div></div>`; container.innerHTML += html; }); document.getElementById('quiz-submit-btn').classList.remove('hidden'); document.getElementById('quiz-result-container').classList.add('hidden'); document.getElementById('quiz-modal').classList.remove('hidden'); }
+        function closeQuiz() { document.getElementById('quiz-modal').classList.add('hidden'); }
+        function submitQuiz() {
+            const qd = quizzes[currentQuiz];
+            if(!qd) return;
+            let score = 0;
+            for(let i=0; i<qd.questions.length; i++) {
+                const sel = document.querySelector(`input[name="q${i}"]:checked`);
+                if(sel && parseInt(sel.value)===qd.questions[i].ans) score++;
+                const fbDiv = document.querySelector(`.feedback-${i}`);
+                if(fbDiv){
+                    fbDiv.classList.remove('hidden');
+                    const correctTxt = qd.questions[i].options[qd.questions[i].ans];
+                    if(sel && parseInt(sel.value)===qd.questions[i].ans) { fbDiv.innerHTML='<span class="text-green-700">✓ Correct</span>'; fbDiv.parentElement?.classList.add('quiz-feedback-correct'); }
+                    else { const selectedTxt = sel? qd.questions[i].options[parseInt(sel.value)]:"No answer"; fbDiv.innerHTML=`<span class="text-red-700">✗ Incorrect. Correct: ${correctTxt}. You answered: ${selectedTxt}</span>`; fbDiv.parentElement?.classList.add('quiz-feedback-wrong'); }
+                }
+            }
+            let percent = (score/qd.questions.length)*100;
+            let resultDiv = document.getElementById('quiz-result-container');
+            document.getElementById('quiz-submit-btn').classList.add('hidden');
+            resultDiv.classList.remove('hidden');
+            if(percent>=75){
+                if(currentQuiz==='final_quiz'){ resultDiv.innerHTML=`<div class="text-green-600 text-4xl text-center">🎉 Excellent! Score ${score}/${qd.questions.length} (${percent}%)<br>You mastered Abortion (All Types)</div><button onclick="closeQuiz()" class="mt-4 bg-abortion text-white px-6 py-2 rounded-xl">Close</button>`; return; }
+                if(quizzes[currentQuiz].next && !unlockedSections.includes(quizzes[currentQuiz].next)) unlockedSections.push(quizzes[currentQuiz].next);
+                if(quizzes[currentQuiz].next === 'mnemonics' && !unlockedSections.includes('final_quiz_sec')) unlockedSections.push('final_quiz_sec');
+                updateSidebarUI();
+                resultDiv.innerHTML=`<div class="text-green-600 text-3xl text-center">✅ Passed! (${score}/${qd.questions.length})</div><button onclick="closeQuiz(); showSection('${quizzes[currentQuiz].next}')" class="mt-4 bg-green-600 text-white px-6 py-2 rounded-xl">Unlock Next Section</button>`;
+            } else { resultDiv.innerHTML=`<div class="text-red-600 text-3xl text-center">❌ Failed: ${score}/${qd.questions.length} (${percent}%)<br>Need 75%</div><button onclick="openQuiz('${currentQuiz}')" class="mt-4 bg-slate-600 text-white px-6 py-2 rounded-xl">Try Again</button>`; }
+        }
+        function toggleRecallMode() { const active = !document.body.classList.contains('recall-mode'); const toggle=document.getElementById('recall-toggle'),knob=document.getElementById('recall-knob'); if(active){ document.body.classList.add('recall-mode'); toggle.classList.add('bg-abortion-dark'); knob.classList.add('translate-x-6'); } else { document.body.classList.remove('recall-mode'); toggle.classList.remove('bg-abortion-dark'); knob.classList.remove('translate-x-6'); } }
+        function toggleMobileMenu() { const s=document.getElementById('sidebar'); if(s.classList.contains('hidden')) s.classList.remove('hidden','flex','absolute','h-full','z-50'); else s.classList.add('hidden'); }
+        document.addEventListener('DOMContentLoaded', () => { updateSidebarUI(); document.querySelectorAll('.reveal-text').forEach(el => el.addEventListener('click', function(){ if(document.body.classList.contains('recall-mode')) this.classList.toggle('revealed'); })); });
+    </script>
+</body>
+</html>
